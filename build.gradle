@@ -1,0 +1,117 @@
+buildscript {
+    ext.kotlin_version = '1.3.61'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+plugins {
+    id "io.codearte.nexus-staging" version "0.21.1"
+}
+group = 'io.github.atmaramnaik'
+allprojects {
+    apply plugin: "kotlin"
+    group = 'io.github.atmaramnaik'
+
+    project.ext {
+        apiVersion ='0.0.2'
+        publishing = false
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    }
+
+    compileKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+    }
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+    }
+
+}
+subprojects {
+    apply plugin: 'signing'
+    apply plugin: 'maven'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    if(this.archivesBaseName.startsWith('kosel')){
+        signing {
+            useGpgCmd()
+            sign configurations.archives
+        }
+        task javadocJar(type: Jar) {
+            classifier = 'javadoc'
+            from javadoc
+        }
+        task sourcesJar(type: Jar) {
+            classifier = 'sources'
+            from sourceSets.main.allSource
+        }
+        artifacts {
+            archives javadocJar, sourcesJar
+        }
+
+        // Build, sign, and upload
+        uploadArchives {
+            repositories {
+                mavenDeployer {
+
+                    // Sign POM
+                    beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                    // Destination
+                    repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                        authentication(userName: ossrhUsername, password: ossrhPassword)
+                    }
+                    snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                        authentication(userName: ossrhUsername, password: ossrhPassword)
+                    }
+
+                    // Add required metadata to POM
+                    pom.project {
+//                        name projectName
+                        packaging 'jar'
+//                        description projectDesc
+                        url 'https://atmaramnaik.github.io/kosel'
+
+                        scm {
+                            connection 'scm:git:https://github.com/atmaramnaik/kosel.git'
+                            developerConnection 'scm:git:https://github.com/atmaramnaik/kosel.git'
+                            url 'scm:git:https://github.com/atmaramnaik/kosel.git/master'
+                        }
+
+                        licenses {
+                            license {
+                                name 'The Apache License, Version 2.0'
+                                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            }
+                        }
+
+                        developers {
+                            developer {
+                                id 'atmaramnaik'
+                                name 'Atmaram Naik'
+                                email 'naik_atmaram@yahoo.com'
+                                organization 'Thoughtworks'
+                                organizationUrl 'https://www.thoughtworks.com/'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+nexusStaging {
+    username = ossrhUsername
+    password = ossrhPassword
+}

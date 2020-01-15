@@ -1,0 +1,19 @@
+plugins {
+    id 'maven'
+}
+group = 'io.github.atmaramnaik'
+
+dependencies {
+    implementation "org.junit.jupiter:junit-jupiter-engine:5.5.2"
+    testImplementation group: 'io.mockk', name: 'mockk', version: '1.9.3'
+    implementation "org.seleniumhq.selenium:selenium-java:4.0.0-alpha-1"
+}
+
+archivesBaseName = "kosel-core"
+version = '0.0.5'
+uploadArchives.repositories.mavenDeployer {
+    pom.project{
+        name = 'Core module for kosel framework'
+        description = 'Core module for kosel framework'
+    }
+}

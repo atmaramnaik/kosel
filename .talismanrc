@@ -1,0 +1,13 @@
+fileignoreconfig:
+- filename: build.gradle
+  checksum: eff38aed1fe56564e9657fef9b7759e6e86e80512d12c09399b32a6512b7ab52
+  ignore_detectors: []
+- filename: sampleAppTest/src/test/kotlin/io/github/atmaramnaik/kosel/test/data/User.kt
+  checksum: de7d8a79265d43c440545651621d1e826dfca07850b08d3cb6b5642f303cc7d4
+  ignore_detectors: []
+- filename: sampleAppTest/src/test/kotlin/io/github/atmaramnaik/kosel/test/pages/LoginPage.kt
+  checksum: a9703661f06f5122e0c7208b646ddb8c260288f685ebc1df89308b567f35d73b
+  ignore_detectors: []
+- filename: sampleAppTest/src/test/kotlin/io/github/atmaramnaik/kosel/test/pages/RegistrationPage.kt
+  checksum: 8fddccc6cae2497591c6623fe28a2994976358c74c4fa26996b7b94d5cfb146e
+  ignore_detectors: []

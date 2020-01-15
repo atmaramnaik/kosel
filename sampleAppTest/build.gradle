@@ -1,0 +1,22 @@
+import groovy.json.JsonSlurper
+
+group = 'io.github.atmaramnaik'
+version "0.0.2"
+repositories {
+    maven {
+        url "https://repo.spring.io/libs-release/"
+    }
+}
+dependencies {
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:5.5.2"
+    testImplementation project(":core")
+//    testImplementation "io.github.atmaramnaik:kosel-core:0.0.2"
+    implementation "org.seleniumhq.selenium:selenium-java:3.141.59"
+    testImplementation "com.github.kittinunf.fuel:fuel:2.2.1"
+    testImplementation "com.github.kittinunf.fuel:fuel-jackson:2.2.0"
+    testImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.10.1'
+    testImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.1'
+}
+test {
+    useJUnitPlatform()
+}
